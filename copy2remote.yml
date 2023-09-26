@@ -1,0 +1,16 @@
+---
+- name: Copy 2 Remote host
+  hosts: planetexpress
+
+  tasks:
+  - name: From remote1 to local
+    ansible.builtin.fetch:
+      src: ~/fry.txt
+      dest: ~/fry_copy.txt
+    when: ansible_hostname == "fry"
+
+  - name: Copying
+    ansible.builtin.copy:
+      src: ~/fry_copy.txt
+      dest: ~/fry_copy2.txt
+    when: ansible_hostname == "bender"
