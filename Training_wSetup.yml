@@ -1,0 +1,17 @@
+---
+- name: Get network info from setup.py
+  hosts: fry
+  gather_facts: true
+  
+  tasks:
+  - name: OS Distribution
+    debug:
+      var: ansible_facts.distribution
+
+  - name: OS Version
+    debug: 
+      var: ansible_facts.distribution_version
+
+  - name: IPv4 address
+    debug:
+      var: ansible_facts.eth0.ipv4.address
