@@ -1,0 +1,32 @@
+---
+- name: Testing with TextFSM
+  hosts: localhost
+
+  vars:
+    results:
+      stdout: "{{ lookup('file', '/home/student/mycode/textfsm_examples/cisco_ipv6_interface_example') }}"
+
+  tasks:
+  # pretend that these "results" just came back from a command like
+  # enable
+  # show version
+  #
+  - name: Display our results from the command "show version"
+    debug:
+      var: results.stdout
+
+  # there is data we want in that blob of text
+  # we can grab that data by passing our (predictable) text blob through
+  # a textfsm template (we would need to design this)
+  # creating the template can be very time consuming
+  # It also depends on you understanding regular expression
+  - name: IPv6 Mimic parsing output with TextFSM
+    set_fact:
+      ip6facts: "{{ results.stdout | parse_cli_textfsm('/home/student/mycode/textfsm_examples/cisco_ipv6_interface_template') }}"
+
+  # display the "new" facts harvested by textfsm
+  # it might be more proper to say that our data
+  # has just become more easily accessible
+  - name: Show the new facts
+    debug:
+      var: ip6facts
